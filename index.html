@@ -1,0 +1,27 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <div id="container">
+      <p>
+        If you can see this, React is not working right. This is probably because you&apos;re viewing
+        this on your file system instead of a web server.<br>
+        Try navigating to the Evolution root
+        <pre>
+          cd /path/to/Evolution
+        </pre>
+        and running
+        <pre>
+          python -m SimpleHTTPServer
+        </pre>
+        and going to <a href="http://localhost:8000/">http://localhost:8000/</a>.
+      </p>
+    </div>
+    <div id="archaeon">
+    </div>
+    <script src="js/framework/react.js"></script>
+    <script src="js/framework/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+    <script type="text/babel" src="js/game.js"></script>
+  </body>
+</html>
