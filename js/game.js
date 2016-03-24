@@ -61,7 +61,6 @@ var App = React.createClass({
 
 handleResourceClick: function(entry) {
     this.setState(function (state) {
-        console.log('resources', state, this.state);
         return {
             resources: update(this.state.resources, {[entry]: {value: {$set: state.resources[entry].value + 1}}})
         }
