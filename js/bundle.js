@@ -5,70 +5,118 @@ var update = require('react-addons-update');
 
 var start = new Date().getTime();
 setInterval(function () {
-  ReactDOM.render(React.createElement(App, null), document.getElementById('container'));
+    ReactDOM.render(React.createElement(App, null), document.getElementById('container'));
 }, 50);
 
 var AmountView = React.createClass({
-  displayName: 'AmountView',
+    displayName: 'AmountView',
 
-  render: function () {
-    var className = 'amount' + this.props.internalId.charAt(0).toUpperCase() + this.props.internalId.slice(1);
-    return React.createElement(
-      'div',
-      { className: className },
-      this.props.amount
-    );
-  }
+    render: function () {
+        var className = 'amount' + this.props.internalId.charAt(0).toUpperCase() + this.props.internalId.slice(1);
+        return React.createElement(
+            'div',
+            { className: className },
+            this.props.amount
+        );
+    }
 });
 
-var FeatureButton = React.createClass({
-  displayName: 'FeatureButton',
+var ResourceButton = React.createClass({
+    displayName: 'ResourceButton',
 
-  render: function () {
-    var className = 'button' + this.props.internalId.charAt(0).toUpperCase() + this.props.internalId.slice(1);
-    return React.createElement(
-      'button',
-      { onClick: this.props.handleClick, className: className },
-      this.props.text
-    );
-  }
+    render: function () {
+        var className = 'buttonRes' + this.props.internalId.charAt(0).toUpperCase() + this.props.internalId.slice(1);
+        return React.createElement(
+            'button',
+            { onClick: this.props.handleClick, className: className },
+            this.props.text
+        );
+    }
+});
+
+var ProductionButton = React.createClass({
+    displayName: 'ProductionButton',
+
+    render: function () {
+        var className = 'buttonProd' + this.props.internalId.charAt(0).toUpperCase() + this.props.internalId.slice(1);
+        return React.createElement(
+            'button',
+            { onClick: this.props.handleClick, className: className },
+            this.props.text,
+            '(',
+            this.props.amount,
+            ')'
+        );
+    }
 });
 
 var App = React.createClass({
-  displayName: 'App',
+    displayName: 'App',
 
-  getInitialState: function () {
-    return { data: [{
-        internalId: 'archaeen',
-        text: 'Archaeon',
-        value: 0
-      }] };
-  },
-  handleButtonClick: function (entry) {
-    this.setState(function (state) {
-      return { data: update(this.state.data, { [entry]: { value: { $set: state.data[entry].value + 1 } } }) };
-    });
-  },
-  render: function () {
-    return React.createElement(
-      'div',
-      { id: 'App' },
-      React.createElement(
-        'div',
-        { id: 'amountContainer' },
-        this.state.data.map(function (result, i) {
-          return React.createElement(AmountView, { amount: result.value, internalId: result.internalId, key: i });
-        })
-      ),
-      React.createElement(
-        'div',
-        { id: 'buttonContainer' },
-        this.state.data.map(function (result, i) {
-          return React.createElement(FeatureButton, { handleClick: this.handleButtonClick.bind(this, i), internalId: result.internalId, text: result.text, key: i });
-        }.bind(this))
-      )
-    );
-  }
+    getInitialState: function () {
+        return {
+            resources: [{
+                internalId: 'archaeen',
+                text: 'Archaeon',
+                value: 0
+            }],
+            production: [{
+                internalId: 'carbongenerator',
+                text: 'Carbon Generator2',
+                valueIncrease: 1,
+                amount: 0,
+                costs: {
+                    resource: 'archaeen',
+                    amount: 25
+                }
+            }]
+        };
+    },
+
+    handleResourceClick: function (entry) {
+        this.setState(function (state) {
+            return {
+                data: update(this.state.resources, { [entry]: { value: { $set: state.resources[entry].value + 1 } } })
+            };
+        });
+    },
+
+    handleProductionClick: function (entry) {
+        this.setState(function (state) {
+            return {
+                data: update(this.state.production, { [entry]: { amount: { $set: state.production[entry].amount + 1 } } })
+            };
+        });
+    },
+
+    render: function () {
+        return React.createElement(
+            'div',
+            { id: 'App' },
+            React.createElement(
+                'div',
+                { id: 'amountContainer' },
+                this.state.resources.map(function (result, i) {
+                    return React.createElement(AmountView, { amount: result.value, internalId: result.internalId, key: i });
+                })
+            ),
+            React.createElement(
+                'div',
+                { id: 'buttonContainer' },
+                this.state.resources.map(function (result, i) {
+                    return React.createElement(ResourceButton, { handleClick: this.handleResourceClick.bind(this, i), internalId: result.internalId, text: result.text, key: i });
+                }.bind(this))
+            ),
+            React.createElement(
+                'div',
+                { id: 'prodContainer' },
+                this.state.production.map(function (result, i) {
+                    return React.createElement(ProductionButton, { handleClick: this.handleProductionClick.bind(this, i), internalId: result.internalId, text: result.text, amount: result.amount, key: i });
+                }.bind(this))
+            )
+        );
+    }
+
 });
 
 },{"react":160,"react-addons-update":2,"react-dom":3}],2:[function(require,module,exports){

@@ -4,59 +4,96 @@ var update = require('react-addons-update');
 
 var start = new Date().getTime();
 setInterval(function() {
-  ReactDOM.render(
-    <App />,
+    ReactDOM.render(
+        <App />,
     document.getElementById('container')
-  );
+    );
 }, 50);
 
-
-
 var AmountView = React.createClass({
-  render: function () {
-    var className = 'amount' + this.props.internalId.charAt(0).toUpperCase() + this.props.internalId.slice(1);
-    return <div className={className}>
-      {this.props.amount}
-    </div>;
-  }
+    render: function () {
+        var className = 'amount' + this.props.internalId.charAt(0).toUpperCase() + this.props.internalId.slice(1);
+        return <div className={className}>
+            {this.props.amount}
+        </div>;
+    }
 });
 
-var FeatureButton = React.createClass({
-  render: function () {
-    var className = 'button' + this.props.internalId.charAt(0).toUpperCase() + this.props.internalId.slice(1);
-    return <button onClick={this.props.handleClick} className={className}>{this.props.text}</button>;
-  }
+var ResourceButton = React.createClass({
+    render: function () {
+        var className = 'buttonRes' + this.props.internalId.charAt(0).toUpperCase() + this.props.internalId.slice(1);
+        return <button onClick={this.props.handleClick} className={className}>{this.props.text}</button>;
+    }
 });
 
+var ProductionButton = React.createClass({
+    render: function () {
+        var className = 'buttonProd' + this.props.internalId.charAt(0).toUpperCase() + this.props.internalId.slice(1);
+        return <button onClick={this.props.handleClick} className={className}>{this.props.text}({this.props.amount})</button>
+    }
+});
 
 
 var App = React.createClass({
-  getInitialState: function () {
-    return {data:[
-      {
-        internalId: 'archaeen',
-        text: 'Archaeon',
-        value: 0
-      }
-    ]};
-  },
-  handleButtonClick: function(entry) {
+    getInitialState: function () {
+        return {
+            resources:[
+                {
+                    internalId: 'archaeen',
+                    text: 'Archaeon',
+                    value: 0
+                }
+            ],
+            production: [
+                {
+                    internalId: 'carbongenerator',
+                    text: 'Carbon Generator2',
+                    valueIncrease: 1,
+                    amount: 0,
+                    costs: {
+                        resource: 'archaeen',
+                        amount: 25
+                    }
+                }
+            ]
+        };
+    },
+
+handleResourceClick: function(entry) {
     this.setState(function (state) {
-      return {data: update(this.state.data, {[entry]: {value: {$set: state.data[entry].value + 1}}})}
+        return {
+            data: update(this.state.resources, {[entry]: {value: {$set: state.resources[entry].value + 1}}})
+        }
     });
-  },
-  render: function () {
+},
+
+handleProductionClick: function(entry) {
+    this.setState(function (state) {
+        return {
+            data: update(this.state.production, {[entry]: {amount: {$set: state.production[entry].amount + 1}}})
+        }
+    });
+},
+
+render: function () {
     return <div id="App">
-      <div id="amountContainer">
-        {this.state.data.map(function(result, i) {
-          return <AmountView amount={result.value} internalId={result.internalId} key={i} />
-        })}
-      </div>
-      <div id="buttonContainer">
-        {this.state.data.map(function(result, i) {
-          return <FeatureButton handleClick={this.handleButtonClick.bind(this, i)} internalId={result.internalId} text={result.text} key={i} />
-        }.bind(this))}
-    </div>
+        <div id="amountContainer">
+            {this.state.resources.map(function(result, i) {
+                return <AmountView amount={result.value} internalId={result.internalId} key={i} />
+            })}
+        </div>
+        <div id="buttonContainer">
+            {this.state.resources.map(function(result, i) {
+                return <ResourceButton handleClick={this.handleResourceClick.bind(this, i)} internalId={result.internalId} text={result.text} key={i} />
+            }.bind(this))}
+        </div>
+        <div id="prodContainer">
+            {this.state.production.map(function(result, i) {
+                return <ProductionButton handleClick={this.handleProductionClick.bind(this, i)} internalId={result.internalId} text={result.text} amount={result.amount} key={i} />
+            }.bind(this))}
+        </div>
+
     </div>;
-  }
+}
+
 });
