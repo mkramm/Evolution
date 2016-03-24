@@ -36,25 +36,16 @@ var App = React.createClass({
       {
         internalId: 'archaeen',
         text: 'Archaeon',
-        value: 0,
-        handleClick: function (a,b,c,d) {
-          this.setState(function (state) {
-            console.log(state);
-          });
-        }
+        value: 0
       }
     ]};
   },
-  handleButtonClick: function(i) {
-    this.setState(function () {
-      this.state
-      return {}
+  handleButtonClick: function(entry) {
+    this.setState(function (state) {
+      return {data: update(this.state.data, {[entry]: {value: {$set: state.data[entry].value + 1}}})}
     });
   },
   render: function () {
-    var amount = 0;
-    var internalId = 'Archaeen';
-
     return <div id="App">
       <div id="amountContainer">
         {this.state.data.map(function(result, i) {
@@ -63,7 +54,7 @@ var App = React.createClass({
       </div>
       <div id="buttonContainer">
         {this.state.data.map(function(result, i) {
-          return <FeatureButton handleClick={result.handleClick.bind(this, i)} internalId={result.internalId} text={result.text} key={i} />
+          return <FeatureButton handleClick={this.handleButtonClick.bind(this, i)} internalId={result.internalId} text={result.text} key={i} />
         }.bind(this))}
     </div>
     </div>;

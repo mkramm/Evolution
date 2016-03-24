@@ -7,7 +7,7 @@ to build the javascript file you have to do:
 
 go to the root of this Project:
 
-  npm install --save react react-dom babelify babel-preset-react (is working with node 4.x but not with 5.x)
+  npm install --save react react-dom react-addons-update babelify babel-preset-react (is working with node 4.x but not with 5.x)
 
 to rebuild your code call (from the root of the Project):
   browserify -t [ babelify --presets [ react ] ] js/game.js -o js/bundle.js
