@@ -75,8 +75,9 @@ var App = React.createClass({
 
     handleResourceClick: function (entry) {
         this.setState(function (state) {
+            console.log('resources', state, this.state);
             return {
-                data: update(this.state.resources, { [entry]: { value: { $set: state.resources[entry].value + 1 } } })
+                resources: update(this.state.resources, { [entry]: { value: { $set: state.resources[entry].value + 1 } } })
             };
         });
     },
@@ -84,7 +85,7 @@ var App = React.createClass({
     handleProductionClick: function (entry) {
         this.setState(function (state) {
             return {
-                data: update(this.state.production, { [entry]: { amount: { $set: state.production[entry].amount + 1 } } })
+                production: update(this.state.production, { [entry]: { amount: { $set: state.production[entry].amount + 1 } } })
             };
         });
     },
