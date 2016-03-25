@@ -3,11 +3,6 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var update = require('react-addons-update');
 
-var start = new Date().getTime();
-setInterval(function () {
-    ReactDOM.render(React.createElement(App, null), document.getElementById('container'));
-}, 50);
-
 var AmountView = React.createClass({
     displayName: 'AmountView',
 
@@ -62,7 +57,7 @@ var App = React.createClass({
             }],
             production: [{
                 internalId: 'carbongenerator',
-                text: 'Carbon Generator2',
+                text: 'Carbon Generator',
                 valueIncrease: 1,
                 amount: 0,
                 costs: {
@@ -118,6 +113,8 @@ var App = React.createClass({
     }
 
 });
+
+ReactDOM.render(React.createElement(App, null), document.getElementById('container'));
 
 },{"react":160,"react-addons-update":2,"react-dom":3}],2:[function(require,module,exports){
 module.exports = require('react/lib/update');

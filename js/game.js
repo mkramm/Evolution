@@ -2,14 +2,6 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var update = require('react-addons-update');
 
-var start = new Date().getTime();
-setInterval(function() {
-    ReactDOM.render(
-        <App />,
-    document.getElementById('container')
-    );
-}, 50);
-
 var AmountView = React.createClass({
     render: function () {
         var className = 'amount' + this.props.internalId.charAt(0).toUpperCase() + this.props.internalId.slice(1);
@@ -33,7 +25,6 @@ var ProductionButton = React.createClass({
     }
 });
 
-
 var App = React.createClass({
     getInitialState: function () {
         return {
@@ -47,7 +38,7 @@ var App = React.createClass({
             production: [
                 {
                     internalId: 'carbongenerator',
-                    text: 'Carbon Generator2',
+                    text: 'Carbon Generator',
                     valueIncrease: 1,
                     amount: 0,
                     costs: {
@@ -92,8 +83,9 @@ render: function () {
                 return <ProductionButton handleClick={this.handleProductionClick.bind(this, i)} internalId={result.internalId} text={result.text} amount={result.amount} key={i} />
             }.bind(this))}
         </div>
-
     </div>;
 }
 
 });
+
+ReactDOM.render(<App />, document.getElementById('container'));
