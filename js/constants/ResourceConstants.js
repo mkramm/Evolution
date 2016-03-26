@@ -2,6 +2,6 @@
 
 var keyMirror = require('keymirror');
 
-module.exports = keyMirror({
+module.exports = keyMirror({    
   RESOURCE_INCREASE: null
 });

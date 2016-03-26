@@ -1,12 +1,11 @@
 var React = require('react');
 var ResourceStore = require('../stores/ResourceStore.js');
-var AmountView = require('./AmountView.react.js');
+var ResourceAmountView = require('./ResourceAmountView.react.js');
 var ResourceButton = require('./ResourceButton.react.js');
 
 function getGameState() {
-    var resources = ResourceStore.getAll();
     return {
-        resources: resources.data
+        resources: ResourceStore.getAll()
     };
 }
 
@@ -28,13 +27,13 @@ var Game = React.createClass({
         return <div>
             <div id="amountContainer">
                 {this.state.resources.map(function(result, i) {
-                    return <AmountView amount={result.value} internalId={result.internalId} key={i} />
+                    return <ResourceAmountView id={i} key={i} />
                 })}
             </div>
             <div id="buttonContainer">
                 {this.state.resources.map(function(result, i) {
-                    return <ResourceButton id={i} internalId={result.internalId} text={result.text} key={i} />
-                }.bind(this))}
+                    return <ResourceButton id={i} key={i} />
+                })}
             </div>
         </div>;
     },
