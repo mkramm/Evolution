@@ -35,6 +35,11 @@ var Game = React.createClass({
                     return <ResourceButton id={i} key={i} />
                 })}
             </div>
+            <div id="generatorContainer">
+                {this.state.resources.map(function(result, i) {
+                    return <generatorButton id={i} key={i} />
+                })}
+            </div>
         </div>;
     },
 
