@@ -66,14 +66,14 @@ ResourceStore = assign({}, EventEmitter.prototype, {
      * @param {function} callback
      */
     addInnerChangeListener: function(callback) {
-    this.on(INNER_CHANGE_EVENT, callback);
+        this.on(INNER_CHANGE_EVENT, callback);
     },
 
     /**
      * @param {function} callback
      */
     removeInnerChangeListener: function(callback) {
-    this.removeListener(INNER_CHANGE_EVENT, callback);
+        this.removeListener(INNER_CHANGE_EVENT, callback);
     }
 });
 
