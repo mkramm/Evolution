@@ -7,13 +7,12 @@ var RequirementActions = require('../actions/RequirementActions.js');
 var ResourceActions = require('../actions/ResourceActions.js');
 var ProductionStore = require('../stores/ProductionStore.js');
 var ProductionActions = require('../actions/ProductionActions.js');
-var ProductionButton = require('./ProductionButton.react.js');
 
 function getGameState() {
     return {
         resources: ResourceStore.getAll(),
         nextRequirement: RequirementStore.getNext(),
-        production: ProductionStore.getAll()
+        gasBucket: ProductionStore.getAll()
     };
 }
 
@@ -26,11 +25,15 @@ var Game = React.createClass({
     componentDidMount: function() {
         ResourceStore.addChangeListener(this._onChange);
         RequirementStore.addChangeListener(this._onChange);
+        ProductionStore.addUseListener(this._onChange);
+        this.interval = setInterval(this._useCarbon, 1000);
     },
 
     componentWillUnmount: function() {
         ResourceStore.removeChangeListener(this._onChange);
         RequirementStore.removeChangeListener(this._onChange);
+        ProductionStore.removeUseListener(this._onChange);
+        clearInterval(this.interval);
     },
 
     useYourBrain: function (){
@@ -44,8 +47,15 @@ var Game = React.createClass({
     _onChange: function() {
         this.setState(getGameState());
     },
+
+    useCarbon: function() {
+    ProductionActions.produceResources('carbon', this.state.resources[0].value);
+    },
+
     render: function () {
+
         var brainButton = '';
+
         if(undefined !== this.state.nextRequirement) {
             brainButton = <button className="btn btn-primary" disabled={this.state.resources[this.state.nextRequirement.requiredId].amount < this.state.nextRequirement.amount} id="useYourBrain" onClick={this.useYourBrain}>Use Your Brain</button>
         }
@@ -72,14 +82,12 @@ var Game = React.createClass({
                     </div>
                 </div>
                 <div className="col-lg-3">
-                    <div id="productionButtonContainer">
-                        {this.state.production.map(function(result, i) {
-                            return <ProductionButton id={i} key={i} />
-                        })}
+                    <div id="gas">
+                        <button id="produceREsources" onClick={this._useCarbon}>Production</button>
                     </div>
                 </div>
             </div>
-        </div>;
+            </div>;
     }
 });
 
