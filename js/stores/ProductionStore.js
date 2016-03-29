@@ -13,8 +13,8 @@ var _production = {
             internalId: 'production1',
             text: 'Production',
             amount: 0,
-            usable: true,
-            prodAmount: 1
+            usable: false,
+            prodAmount: 0.1
         }
     ]
 };
@@ -30,7 +30,7 @@ function increaseValue(id, amount) {
     }
 }
 
-function enableResource(id) {
+function enableProduction(id) {
     if (_production.data[id] !== undefined) {
         _production.data[id].usable = true;
     }
@@ -38,7 +38,6 @@ function enableResource(id) {
 
 function produceResources(id) {
     if (_production.data[id] !== undefined && _production.data[id].usable && _production.data[id].amount > 0) {
-        console.log(ResourceActions);
         setTimeout(function () {
             ResourceActions.increaseValue(0, _production.data[id].prodAmount * _production.data[id].amount);
         }, 1);
@@ -103,7 +102,7 @@ GameDispatcher.register(function(action) {
             ProductionStore.emitChange();
         break;
         case ProductionConstants.PRODUCTION_ENABLE:
-            enableResource(action.id);
+            enableProduction(action.id);
             ProductionStore.emitChange();
         break;
         case ProductionConstants.PRODUCTION_PRODUCE:

@@ -11,6 +11,11 @@ var _requirements = {
             id: 1,
             amount: 5,
             requiredId: 0
+        },
+        {
+            id: 2,
+            amount: 25,
+            requiredId: 1
         }
     ]
 };

@@ -26,7 +26,7 @@ var Game = React.createClass({
     componentDidMount: function() {
         ResourceStore.addChangeListener(this._onChange);
         RequirementStore.addChangeListener(this._onChange);
-        this.interval = setInterval(this._produceResources, 1000);
+        this.interval = setInterval(this._produceResources, 100);
     },
 
     componentWillUnmount: function() {
@@ -58,6 +58,8 @@ var Game = React.createClass({
         }
 
         return <div>
+            <h1 className="text-center">Evolution - NextGen</h1>
+            <hr></hr>
             <div className="row text-center">
                 <div className="col-lg-3">
                     <div id="amountContainer">

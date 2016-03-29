@@ -23,7 +23,8 @@ var ProductionButton = React.createClass({
     },
 
     handleClick: function() {
-        ProductionActions.increaseValue(this.props.id, 1);
+            ProductionActions.enableProduction(this.props.id);
+            ProductionActions.increaseValue(this.props.id, 1);
     },
 
     render: function () {
