@@ -1,6 +1,7 @@
 var GameDispatcher = require('../dispatcher/GameDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ProductionConstants = require('../constants/ProductionConstants');
+var ResourceActions = require('../actions/ResourceActions');
 var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
@@ -12,14 +13,14 @@ var _production = {
             internalId: 'production1',
             text: 'Production',
             amount: 0,
-            usable: false,
+            usable: true,
             prodAmount: 1
         }
     ]
 };
 
 /**
- * Increase the amount of one Resource value.
+ * Increase the amount of production buildings.
  * @param  {string} id
  * @param {number} amount  amount for increase the value
  */
@@ -39,7 +40,7 @@ function produceResources(id, resource) {
     if (_production.data[id] !== undefined && _production.data[id].usable) {
         setTimeout(function () {
             ResourceActions.increaseValue(0, _production.data[id].prodAmount * _production.data[id].amount);
-        },0);
+        }, 10);
     }
 }
 
