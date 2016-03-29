@@ -4,57 +4,111 @@ var ProductionConstants = require('../constants/ProductionConstants');
 var ResourceActions = require('../actions/ResourceActions');
 var assign = require('object-assign');
 
-var USE_EVENT = 'use';
+var CHANGE_EVENT = 'change';
+var INNER_CHANGE_EVENT = 'innerChange';
 
-var MAX_VALUE = 100;
-var MIN_VALUE = 0;
-var CARBON_USE_PER_UNIT = .2;
-
-
-var _gasBucket = {
-    carbon: MAX_VALUE,
-    oxygen: MIN_VALUE
+var _production = {
+    data: [
+        {
+            internalId: 'production1',
+            text: 'Production',
+            amount: 0,
+            usable: true,
+            prodAmount: 1
+        }
+    ]
 };
 
-function produceResources(type, value) {
-    usage = value * CARBON_USE_PER_UNIT;
-    if(type == 'carbon' && usage > 0 && _gasBucket.carbon >= MIN_VALUE) {
-        _gasBucket.carbon = (Math.round((_gasBucket.carbon - usage) * 10) / 10);
-        _gasBucket.oxygen = (Math.round((_gasBucket.oxygen + usage) * 10) / 10);
-
-        if(_gasBucket.carbon <= MIN_VALUE) {
-            var amountOfTooManyUsers = Math.ceil((_gasBucket.carbon * -1) / CARBON_USE_PER_UNIT);
-            _gasBucket.carbon = MIN_VALUE;
-            _gasBucket.oxygen = MAX_VALUE;
-            setTimeout(function () {
-                ResourceActions.increaseValue(0, (amountOfTooManyUsers * -1));
-            }, 0);
-        }
+/**
+ * Increase the amount of production buildings.
+ * @param  {string} id
+ * @param {number} amount  amount for increase the value
+ */
+function increaseValue(id, amount) {
+    if (_production.data[id] !== undefined && _production.data[id].usable) {
+        _production.data[id].amount += amount;
     }
-
 }
 
-var ProductionStore = assign({}, EventEmitter.prototype, {
-    getAll: function(){
-        return _gasBucket;
+function enableResource(id) {
+    if (_production.data[id] !== undefined) {
+        _production.data[id].usable = true;
+    }
+}
+
+function produceResources(id, resource) {
+    if (_production.data[id] !== undefined && _production.data[id].usable) {
+        setTimeout(function () {
+            ResourceActions.increaseValue(0, _production.data[id].prodAmount * _production.data[id].amount);
+        }, 10);
+    }
+}
+
+
+ProductionStore = assign({}, EventEmitter.prototype, {
+
+     /**
+      * Get the entire collection of Resources.
+      * @return {object}
+      */
+     getAll: function() {
+          return _production.data;
+     },
+
+     getResourceById: function (id) {
+         return _production.data[id];
+     },
+
+    emitChange: function() {
+        this.emit(CHANGE_EVENT);
     },
-    emitUse: function() {
-        this.emit(USE_EVENT);
+
+    /**
+     * @param {function} callback
+     */
+    addChangeListener: function(callback) {
+    this.on(CHANGE_EVENT, callback);
     },
-    addUseListener: function (callback) {
-        this.on(USE_EVENT, callback);
+
+    /**
+     * @param {function} callback
+     */
+    removeChangeListener: function(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+},
+
+    emitInnerChange: function() {
+        this.emit(INNER_CHANGE_EVENT);
     },
-    removeUseListener: function (callback) {
-        this.removeListener(USE_EVENT, callback);
+
+    /**
+     * @param {function} callback
+     */
+    addInnerChangeListener: function(callback) {
+        this.on(INNER_CHANGE_EVENT, callback);
+    },
+
+    /**
+     * @param {function} callback
+     */
+    removeInnerChangeListener: function(callback) {
+        this.removeListener(INNER_CHANGE_EVENT, callback);
     }
 });
 
 GameDispatcher.register(function(action) {
-    switch (action.actionType) {
-        case ProductionConstants.PRODUCE_RESOURCES:
-            produceResources(action.type, action.value);
-            ProductionStore.emitUse();
+    switch(action.actionType) {
+        case ProductionConstants.PRODUCTION_INCREASE:
+            increaseValue(action.id, action.amount);
+            ProductionStore.emitChange();
         break;
+        case ProductionConstants.PRODUCTION_ENABLE:
+            enableResource(action.id);
+            ProductionStore.emitChange();
+        break;
+        case ProductionConstants.PRODUCTION_PRODUCE:
+            produceResources(action.id, action.resource);
+            ProductionStore.emitChange();
     }
 });
 

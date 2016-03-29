@@ -1,5 +1,7 @@
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
-  PRODUCE_RESOURCES: null
+  PRODUCTION_ENABLE: null,
+  PRODUCTION_INCREASE: null,
+  PRODUCTION_PRODUCE: null
 });
