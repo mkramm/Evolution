@@ -22,7 +22,7 @@ var ResourceAmountView = React.createClass({
         ResourceStore.removeInnerChangeListener(this._onInnerChange);
     },
     render: function () {
-        return <AmountView text={this.state.text} amount={this.state.value} internalId={this.state.internalId} />;
+        return <AmountView text={this.state.text} amount={this.state.amount} internalId={this.state.internalId} />;
     },
 
     _onInnerChange: function() {

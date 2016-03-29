@@ -9,9 +9,16 @@ var INNER_CHANGE_EVENT = 'innerChange';
 var _resources = {
     data: [
         {
-            internalId: 'archaeen',
-            text: 'Archaeon',
-            value: 0
+            internalId: 'food1',
+            text: 'Food',
+            amount: 0,
+            usable: true
+        },
+        {
+            internalId: 'material1',
+            text: 'Material',
+            amount: 0,
+            usable: false
         }
     ]
 };
@@ -19,10 +26,18 @@ var _resources = {
 /**
  * Increase the amount of one Resource value.
  * @param  {string} id
- * @param {number} amount for increase the value
+ * @param {number} amount  amount for increase the value
  */
-function increaseValue(id, value) {
-    _resources.data[id].value += value;
+function increaseValue(id, amount) {
+    if(_resources.data[id] !== undefined && _resources.data[id].usable) {
+        _resources.data[id].amount += amount;
+    }
+}
+
+function enableResource(id) {
+    if(_resources.data[id] !== undefined) {
+        _resources.data[id].usable = true;
+    }
 }
 
 
@@ -80,8 +95,12 @@ ResourceStore = assign({}, EventEmitter.prototype, {
 GameDispatcher.register(function(action) {
     switch(action.actionType) {
         case ResourceConstants.RESOURCE_INCREASE:
-            increaseValue(action.id, action.value);
-            ResourceStore.emitInnerChange();
+            increaseValue(action.id, action.amount);
+            ResourceStore.emitChange();
+        break;
+        case ResourceConstants.RESOURCE_ENABLE:
+            enableResource(action.id);
+            ResourceStore.emitChange();
         break;
     }
 });

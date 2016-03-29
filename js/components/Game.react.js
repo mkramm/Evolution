@@ -2,13 +2,14 @@ var React = require('react');
 var ResourceStore = require('../stores/ResourceStore.js');
 var ResourceAmountView = require('./ResourceAmountView.react.js');
 var ResourceButton = require('./ResourceButton.react.js');
-var GasBucketStore = require('../stores/GasBucketStore.js');
-var GasBucketActions = require('../actions/GasBucketActions.js');
+var RequirementStore = require('../stores/RequirementStore.js');
+var RequirementActions = require('../actions/RequirementActions.js');
+var ResourceActions = require('../actions/ResourceActions.js');
 
 function getGameState() {
     return {
         resources: ResourceStore.getAll(),
-        gasBucket: GasBucketStore.getAll()
+        nextRequirement: RequirementStore.getNext()
     };
 }
 
@@ -20,45 +21,48 @@ var Game = React.createClass({
 
     componentDidMount: function() {
         ResourceStore.addChangeListener(this._onChange);
-        GasBucketStore.addUseListener(this._onChange);
-        this.interval = setInterval(this._useCarbon, 1000);
+        RequirementStore.addChangeListener(this._onChange);
     },
 
     componentWillUnmount: function() {
         ResourceStore.removeChangeListener(this._onChange);
-        GasBucketStore.removeUseListener(this._onChange);
-        clearInterval(this.interval);
+        RequirementStore.removeChangeListener(this._onChange);
     },
 
-    render: function () {
-        return <div>
-            <div id="gas">
-                <div>
-                    carbon: {this.state.gasBucket.carbon}
-                </div>
-                <div>
-                    oxygen: {this.state.gasBucket.oxygen}
-                </div>
-            </div>
-            <div id="amountContainer">
-                {this.state.resources.map(function(result, i) {
-                    return <ResourceAmountView id={i} key={i} />
-                })}
-            </div>
-            <div id="buttonContainer">
-                {this.state.resources.map(function(result, i) {
-                    return <ResourceButton id={i} key={i} />
-                })}
-            </div>
-        </div>;
+    useYourBrain: function (){
+        if(undefined !== this.state.nextRequirement && this.state.resources[this.state.nextRequirement.requiredId].amount >= this.state.nextRequirement.amount) {
+            ResourceActions.enableResource(this.state.nextRequirement.id);
+            ResourceActions.increaseValue(this.state.nextRequirement.requiredId, (this.state.nextRequirement.amount * -1));
+            RequirementActions.increaseNext();
+        }
     },
 
     _onChange: function() {
         this.setState(getGameState());
     },
+    render: function () {
+        var brainButton = '';
+        if(undefined !== this.state.nextRequirement) {
+            brainButton = <button disabled={this.state.resources[this.state.nextRequirement.requiredId].amount < this.state.nextRequirement.amount} id="useYourBrain" onClick={this.useYourBrain}>Use Your Brain</button>
+        }
 
-    _useCarbon: function() {
-        GasBucketActions.useGas('carbon', this.state.resources[0].value);
+        return <div>
+            <div id="amountContainer">
+                {this.state.resources.map(function(result, i) {
+                    if (result.usable || result.amount > 0) {
+                        return <ResourceAmountView id={i} key={i} />
+                    }
+                })}
+            </div>
+            <div id="buttonContainer">
+                {this.state.resources.map(function(result, i) {
+                    if(result.usable) {
+                        return <ResourceButton id={i} key={i} />
+                    }
+                })}
+                {brainButton}
+            </div>
+        </div>;
     }
 });
 

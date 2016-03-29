@@ -5,13 +5,20 @@ var ResourceConstants = require('../constants/ResourceConstants');
 var ResourceActions = {
     /**
     * @param  {string} id The ID of the resource
-    * @param  {string} text
+    * @param  {number} amount
     */
-    increaseValue: function(id, value) {
+    increaseValue: function(id, amount) {
         GameDispatcher.dispatch({
             actionType: ResourceConstants.RESOURCE_INCREASE,
             id: id,
-            value: value
+            amount: amount
+        });
+    },
+
+    enableResource: function (id) {
+        GameDispatcher.dispatch({
+            actionType:ResourceConstants.RESOURCE_ENABLE,
+            id: id
         });
     }
 };
