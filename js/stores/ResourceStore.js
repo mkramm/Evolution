@@ -40,7 +40,6 @@ function enableResource(id) {
     }
 }
 
-
 ResourceStore = assign({}, EventEmitter.prototype, {
 
      /**

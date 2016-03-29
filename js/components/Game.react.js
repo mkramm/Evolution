@@ -26,11 +26,13 @@ var Game = React.createClass({
     componentDidMount: function() {
         ResourceStore.addChangeListener(this._onChange);
         RequirementStore.addChangeListener(this._onChange);
+        this.interval = setInterval(this._produceResources, 1000);
     },
 
     componentWillUnmount: function() {
         ResourceStore.removeChangeListener(this._onChange);
         RequirementStore.removeChangeListener(this._onChange);
+        clearInterval(this.interval);
     },
 
     useYourBrain: function (){
@@ -41,9 +43,14 @@ var Game = React.createClass({
         }
     },
 
+    _produceResources: function () {
+        ProductionActions.produceResources(0);
+    },
+
     _onChange: function() {
         this.setState(getGameState());
     },
+
     render: function () {
         var brainButton = '';
         if(undefined !== this.state.nextRequirement) {

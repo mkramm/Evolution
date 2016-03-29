@@ -17,10 +17,10 @@ var ResourceActions = {
 
     enableResource: function (id) {
         GameDispatcher.dispatch({
-            actionType:ResourceConstants.RESOURCE_ENABLE,
+            actionType: ResourceConstants.RESOURCE_ENABLE,
             id: id
         });
-    }
+    },
 };
 
 module.exports = ResourceActions;

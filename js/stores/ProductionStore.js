@@ -36,14 +36,14 @@ function enableResource(id) {
     }
 }
 
-function produceResources(id, resource) {
-    if (_production.data[id] !== undefined && _production.data[id].usable) {
+function produceResources(id) {
+    if (_production.data[id] !== undefined && _production.data[id].usable && _production.data[id].amount > 0) {
+        console.log(ResourceActions);
         setTimeout(function () {
             ResourceActions.increaseValue(0, _production.data[id].prodAmount * _production.data[id].amount);
-        }, 10);
+        }, 1);
     }
 }
-
 
 ProductionStore = assign({}, EventEmitter.prototype, {
 

@@ -6,7 +6,6 @@ function getResourceState(id) {
     return ProductionStore.getResourceById(id);
 }
 
-
 var ProductionButton = React.createClass({
     propTypes: {
         id: ReactPropTypes.number.isRequired,
@@ -24,12 +23,12 @@ var ProductionButton = React.createClass({
     },
 
     handleClick: function() {
-        ProductionActions.produceResources(this.props.id, this.props.amount);
+        ProductionActions.increaseValue(this.props.id, 1);
     },
 
     render: function () {
         var className = 'btn btn-primary';
-        return <button onClick={this.handleClick} className={className}>{this.state.text}</button>;
+        return <button onClick={this.handleClick} className={className}>{this.state.text} ({this.state.amount})</button>;
     },
 
     _onChange: function() {
