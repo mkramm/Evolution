@@ -1,13 +1,13 @@
 var React = require('react');
 var ReactPropTypes = React.PropTypes;
-var ResourceActions = require('../actions/ResourceActions.js');
+var ProductionActions = require('../actions/ProductionActions.js');
 
 function getResourceState(id) {
-    return ResourceStore.getResourceById(id);
+    return ProductionStore.getResourceById(id);
 }
 
 
-var ResourceButton = React.createClass({
+var ProductionButton = React.createClass({
     propTypes: {
         id: ReactPropTypes.number.isRequired,
     },
@@ -16,16 +16,17 @@ var ResourceButton = React.createClass({
     },
 
     componentDidMount: function() {
-        ResourceStore.addChangeListener(this._onChange);
+        ProductionStore.addChangeListener(this._onChange);
     },
 
     componentWillUnmount: function() {
-        ResourceStore.removeChangeListener(this._onChange);
+        ProductionStore.removeChangeListener(this._onChange);
     },
 
     handleClick: function() {
-        ResourceActions.increaseValue(this.props.id, 1);
+        ProductionActions.produceResources(this.props.id, this.props.amount);
     },
+
     render: function () {
         var className = 'btn btn-primary';
         return <button onClick={this.handleClick} className={className}>{this.state.text}</button>;
@@ -36,4 +37,4 @@ var ResourceButton = React.createClass({
     }
 });
 
-module.exports = ResourceButton;
+module.exports = ProductionButton;

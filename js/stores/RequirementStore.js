@@ -9,7 +9,7 @@ var _requirements = {
     data: [
         {
             id: 1,
-            amount: 50,
+            amount: 5,
             requiredId: 0
         }
     ]
