@@ -3,9 +3,11 @@ var EventEmitter = require('events').EventEmitter;
 var ProductionConstants = require('../constants/ProductionConstants');
 var ResourceActions = require('../actions/ResourceActions');
 var assign = require('object-assign');
+var ResourceStore = require('../stores/ResourceStore');
 
 var CHANGE_EVENT = 'change';
 var INNER_CHANGE_EVENT = 'innerChange';
+var costs = 25;
 
 var _production = {
     data: [
@@ -14,7 +16,8 @@ var _production = {
             text: 'Production',
             amount: 0,
             usable: false,
-            prodAmount: 0.1
+            prodAmount: 0.1,
+            costs: costs
         }
     ]
 };
@@ -25,13 +28,13 @@ var _production = {
  * @param {number} amount  amount for increase the value
  */
 function increaseValue(id, amount) {
-    if (_production.data[id] !== undefined && _production.data[id].usable) {
+    if (_production.data[id] !== undefined && _production.data[id].usable && ResourceStore.getResourceById(0).amount >= costs * _production.data[id].amount) {
         _production.data[id].amount += amount;
     }
 }
 
 function enableProduction(id) {
-    if (_production.data[id] !== undefined) {
+    if (_production.data[id] !== undefined && ResourceStore.getResourceById(0).amount >= costs * _production.data[id].amount) {
         _production.data[id].usable = true;
     }
 }

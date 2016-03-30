@@ -10,6 +10,7 @@ var ProductionButton = React.createClass({
     propTypes: {
         id: ReactPropTypes.number.isRequired,
     },
+
     getInitialState: function() {
         return getResourceState(this.props.id);
     },

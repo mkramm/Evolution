@@ -61,7 +61,7 @@ var Game = React.createClass({
             <h1 className="text-center">Evolution - NextGen</h1>
             <hr></hr>
             <div className="row text-center">
-                <div className="col-lg-3">
+                <div className="col-sm-3">
                     <div id="amountContainer">
                         {this.state.resources.map(function(result, i) {
                             if (result.usable || result.amount > 0) {
@@ -70,7 +70,7 @@ var Game = React.createClass({
                         })}
                     </div>
                 </div>
-                <div className="col-lg-6">
+                <div className="col-sm-6">
                     <div id="buttonContainer">
                         {this.state.resources.map(function(result, i) {
                             if(result.usable) {
@@ -80,7 +80,7 @@ var Game = React.createClass({
                         {brainButton}
                     </div>
                 </div>
-                <div className="col-lg-3">
+                <div className="col-sm-3">
                     <div id="productionButtonContainer">
                         {this.state.production.map(function(result, i) {
                             return <ProductionButton id={i} key={i} />

@@ -5,6 +5,7 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 var INNER_CHANGE_EVENT = 'innerChange';
+var maxAmount = 50;
 
 var _resources = {
     data: [
@@ -12,6 +13,7 @@ var _resources = {
             internalId: 'food1',
             text: 'Food',
             amount: 0,
+            maxAmount: maxAmount,
             usable: true
         },
         {
@@ -30,7 +32,11 @@ var _resources = {
  */
 function increaseValue(id, amount) {
     if(_resources.data[id] !== undefined && _resources.data[id].usable) {
-        _resources.data[id].amount += amount;
+        if(_resources.data[id].amount < _resources.data[id].maxAmount) {
+            _resources.data[id].amount += amount;
+        } else {
+            _resources.data[id].amount = maxAmount;
+        }
     }
 }
 

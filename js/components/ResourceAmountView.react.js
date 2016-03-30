@@ -10,6 +10,7 @@ var ResourceAmountView = React.createClass({
     propTypes: {
         id: ReactPropTypes.number.isRequired,
     },
+    
     getInitialState: function () {
         return getResourceState(this.props.id);
     },
@@ -21,6 +22,7 @@ var ResourceAmountView = React.createClass({
     componentWillUnmount: function() {
         ResourceStore.removeInnerChangeListener(this._onInnerChange);
     },
+
     render: function () {
         return <AmountView text={this.state.text} amount={parseFloat((this.state.amount).toFixed(2))} internalId={this.state.internalId} />;
     },
