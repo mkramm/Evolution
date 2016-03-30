@@ -8,21 +8,20 @@ var INNER_CHANGE_EVENT = 'innerChange';
 var maxAmount = 50;
 
 var _resources = {
-    data: [
-        {
-            internalId: 'food1',
-            text: 'Food',
-            amount: 0,
-            maxAmount: maxAmount,
-            usable: true
-        },
-        {
-            internalId: 'material1',
-            text: 'Material',
-            amount: 0,
-            usable: false
-        }
-    ]
+    food1: {
+        internalId: 'food1',
+        text: 'Food',
+        amount: 0,
+        maxAmount: maxAmount,
+        usable: true
+    },
+    material1: {
+        internalId: 'material1',
+        text: 'Material',
+        amount: 0,
+        maxAmount: maxAmount,
+        usable: false
+    }
 };
 
 /**
@@ -31,18 +30,18 @@ var _resources = {
  * @param {number} amount  amount for increase the value
  */
 function increaseValue(id, amount) {
-    if(_resources.data[id] !== undefined && _resources.data[id].usable) {
-        if(_resources.data[id].amount < _resources.data[id].maxAmount) {
-            _resources.data[id].amount += amount;
+    if(_resources[id] !== undefined && _resources[id].usable) {
+        if(_resources[id].amount < _resources[id].maxAmount) {
+            _resources[id].amount += amount;
         } else {
-            _resources.data[id].amount = maxAmount;
+            _resources[id].amount = maxAmount;
         }
     }
 }
 
 function enableResource(id) {
-    if(_resources.data[id] !== undefined) {
-        _resources.data[id].usable = true;
+    if(_resources[id] !== undefined) {
+        _resources[id].usable = true;
     }
 }
 
@@ -53,11 +52,11 @@ ResourceStore = assign({}, EventEmitter.prototype, {
       * @return {object}
       */
      getAll: function() {
-          return _resources.data;
+          return _resources;
      },
 
      getResourceById: function (id) {
-         return _resources.data[id];
+         return _resources[id];
      },
 
     emitChange: function() {

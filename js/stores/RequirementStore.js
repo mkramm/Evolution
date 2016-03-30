@@ -8,14 +8,14 @@ var CHANGE_EVENT = 'requirementChange';
 var _requirements = {
     data: [
         {
-            id: 1,
+            id: 'material1',
             amount: 5,
-            requiredId: 0
+            requiredId: 'food1'
         },
         {
-            id: 2,
+            id: 'food2',
             amount: 25,
-            requiredId: 1
+            requiredId: 'material1'
         }
     ]
 };

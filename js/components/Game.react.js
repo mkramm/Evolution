@@ -53,8 +53,22 @@ var Game = React.createClass({
 
     render: function () {
         var brainButton = '';
+        var ResourceAmountViews = [];
+        var ResourceButtons = [];
+
         if(undefined !== this.state.nextRequirement) {
             brainButton = <button className="btn btn-primary" disabled={this.state.resources[this.state.nextRequirement.requiredId].amount < this.state.nextRequirement.amount} id="useYourBrain" onClick={this.useYourBrain}>Use Your Brain</button>
+        }
+
+        for (var id in this.state.resources) {
+            var resource = this.state.resources[id];
+            if(resource.usable) {
+                ResourceButtons.push(<ResourceButton id={id} key={id} />);
+            }
+
+            if (resource.usable || resource.amount > 0) {
+                ResourceAmountViews.push(<ResourceAmountView id={id} key={id} />);
+            }
         }
 
         return <div>
@@ -63,20 +77,12 @@ var Game = React.createClass({
             <div className="row text-center">
                 <div className="col-sm-3">
                     <div id="amountContainer">
-                        {this.state.resources.map(function(result, i) {
-                            if (result.usable || result.amount > 0) {
-                                return <ResourceAmountView id={i} key={i} />
-                            }
-                        })}
+                        {ResourceAmountViews}
                     </div>
                 </div>
                 <div className="col-sm-6">
                     <div id="buttonContainer">
-                        {this.state.resources.map(function(result, i) {
-                            if(result.usable) {
-                                return <ResourceButton id={i} key={i} />
-                            }
-                        })}
+                        {ResourceButtons}
                         {brainButton}
                     </div>
                 </div>

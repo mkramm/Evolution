@@ -9,7 +9,7 @@ function getResourceState(id) {
 
 var ResourceButton = React.createClass({
     propTypes: {
-        id: ReactPropTypes.number.isRequired,
+        id: ReactPropTypes.string.isRequired,
     },
     
     getInitialState: function() {

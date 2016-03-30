@@ -8,7 +8,7 @@ function getResourceState(id) {
 
 var ResourceAmountView = React.createClass({
     propTypes: {
-        id: ReactPropTypes.number.isRequired,
+        id: ReactPropTypes.string.isRequired,
     },
     
     getInitialState: function () {

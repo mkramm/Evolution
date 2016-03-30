@@ -7,7 +7,7 @@ var ResourceStore = require('../stores/ResourceStore');
 
 var CHANGE_EVENT = 'change';
 var INNER_CHANGE_EVENT = 'innerChange';
-var costs = 25;
+var costs = {amount: 25, id: 'food1'};
 
 var _production = {
     data: [
@@ -28,13 +28,16 @@ var _production = {
  * @param {number} amount  amount for increase the value
  */
 function increaseValue(id, amount) {
-    if (_production.data[id] !== undefined && _production.data[id].usable && ResourceStore.getResourceById(0).amount >= costs * _production.data[id].amount) {
+    if (_production.data[id] !== undefined && _production.data[id].usable && ResourceStore.getResourceById(_production.data[id].costs.id).amount >= _production.data[id].costs.amount * _production.data[id].amount) {
         _production.data[id].amount += amount;
+        setTimeout(function () {
+            ResourceActions.increaseValue(_production.data[id].costs.id, (_production.data[id].costs.amount * -1));
+        }, 1);
     }
 }
 
 function enableProduction(id) {
-    if (_production.data[id] !== undefined && ResourceStore.getResourceById(0).amount >= costs * _production.data[id].amount) {
+    if (_production.data[id] !== undefined && ResourceStore.getResourceById(_production.data[id].costs.id).amount >= _production.data[id].costs.amount * _production.data[id].amount) {
         _production.data[id].usable = true;
     }
 }
@@ -42,7 +45,7 @@ function enableProduction(id) {
 function produceResources(id) {
     if (_production.data[id] !== undefined && _production.data[id].usable && _production.data[id].amount > 0) {
         setTimeout(function () {
-            ResourceActions.increaseValue(0, _production.data[id].prodAmount * _production.data[id].amount);
+            ResourceActions.increaseValue('food1', _production.data[id].prodAmount * _production.data[id].amount);
         }, 1);
     }
 }
