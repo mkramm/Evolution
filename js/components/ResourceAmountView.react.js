@@ -24,7 +24,7 @@ var ResourceAmountView = React.createClass({
     },
 
     render: function () {
-        return <AmountView text={this.state.text} amount={parseFloat((this.state.amount).toFixed(2))} internalId={this.state.internalId} />;
+        return <AmountView text={this.state.text} amount={parseFloat((this.state.amount).toFixed(2))} internalId={this.state.id} />;
     },
 
     _onInnerChange: function() {

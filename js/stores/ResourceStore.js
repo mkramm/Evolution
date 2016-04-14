@@ -1,27 +1,29 @@
 var GameDispatcher = require('../dispatcher/GameDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ResourceConstants = require('../constants/ResourceConstants');
+var Resource = require('../schemas/Resource.js');
 var assign = require('object-assign');
+var resourceIds = require('../constants/ResourceIds.js');
 
 var CHANGE_EVENT = 'change';
 var INNER_CHANGE_EVENT = 'innerChange';
 var maxAmount = 50;
 
 var _resources = {
-    food1: {
-        internalId: 'food1',
+    [resourceIds.food1]: new Resource({
+        id: resourceIds.food1,
         text: 'Food',
         amount: 0,
         maxAmount: maxAmount,
         usable: true
-    },
-    material1: {
-        internalId: 'material1',
+    }),
+    [resourceIds.material1]: new Resource({
+        id: resourceIds.material1,
         text: 'Material',
         amount: 0,
         maxAmount: maxAmount,
         usable: false
-    }
+    })
 };
 
 /**

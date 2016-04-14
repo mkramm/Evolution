@@ -1,7 +1,6 @@
-
-
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
-  REQUIREMENT_INCREASE_NEXT: null
+    production1: null,
+    production2: null
 });
