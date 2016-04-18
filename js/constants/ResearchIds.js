@@ -1,7 +1,7 @@
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
-    PRODUCTION: null,
-    RESOURCE: null,
-    RESEARCH: null
+    research1: null,
+    research2: null,
+    research3: null 
 });

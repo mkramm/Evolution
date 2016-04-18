@@ -24,7 +24,6 @@ var ResearchButton = React.createClass({
 
     useYourBrain: function (){
         if(undefined !== this.state.research && this.state.resources[this.state.research.costs[0].id].amount >= this.state.research.costs[0].amount) {
-            ResourceActions.enableResource(this.state.research.id);
             ResourceActions.increaseValue(this.state.research.costs[0].id, (this.state.research.costs[0].amount * -1));
             ResearchActions.finishResearch(this.state.research.id);
         }

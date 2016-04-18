@@ -4,6 +4,8 @@ var ResourceConstants = require('../constants/ResourceConstants');
 var Resource = require('../schemas/Resource.js');
 var assign = require('object-assign');
 var resourceIds = require('../constants/ResourceIds.js');
+var researchIds = require('../constants/ResearchIds.js');
+var ResearchConstants = require('../constants/ResearchConstants');
 
 var CHANGE_EVENT = 'change';
 var INNER_CHANGE_EVENT = 'innerChange';
@@ -15,16 +17,34 @@ var _resources = {
         text: 'Food',
         amount: 0,
         maxAmount: maxAmount,
-        usable: true
+        usable: true,
+        requirement: ''
     }),
     [resourceIds.material1]: new Resource({
         id: resourceIds.material1,
         text: 'Material',
         amount: 0,
         maxAmount: maxAmount,
-        usable: false
+        usable: false,
+        requirement: researchIds.research1
     })
 };
+
+
+function tryToUnlock(researchId) {
+    var emit = false;
+    for(var key in _resources) {
+        var resource = _resources[key];
+        if(resource.usable === false && resource.requirement == researchId) {
+            resource.usable = true;
+            emit = true;
+        }
+    }
+    
+    if(emit) {
+        ResourceStore.emitChange();
+    }
+}
 
 /**
  * Increase the amount of one Resource value.
@@ -107,6 +127,9 @@ GameDispatcher.register(function(action) {
         case ResourceConstants.RESOURCE_ENABLE:
             enableResource(action.id);
             ResourceStore.emitChange();
+        break;
+        case ResearchConstants.RESEARCH_FINISH:
+            tryToUnlock(action.id);
         break;
     }
 });

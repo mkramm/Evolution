@@ -2,21 +2,23 @@ var GameDispatcher = require('../dispatcher/GameDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ResearchConstants = require('../constants/ResearchConstants');
 var assign = require('object-assign');
-    
-var researchType = require('../constants/ResearchTypes.js');
+
+var researchType = require('../constants/ResearchTypes.js');    
 var researchStatus = require('../constants/ResearchStatus.js');
 var resourceIds = require('../constants/ResourceIds.js');
 var productionIds = require('../constants/ProductionIds.js');
+
+
+var researchIds = require('../constants/ResearchIds');
 
 var EVENT_RESEARCH = 'research';
 var EVENT_RESEARCH_RESOURCE = 'researchResource';
 var EVENT_RESEARCH_PRODUCTION = 'researchProduction';
 
 var _research = {
-    [resourceIds.material1]: {
-        id: resourceIds.material1,
+    [researchIds.research1]: {
+        id: researchIds.research1,
         order: 1,
-        type: researchType.RESOURCE,
         status: researchStatus.AVAILABLE,
         costs: [
             {
@@ -24,12 +26,17 @@ var _research = {
                 amount: 5
             }
         ],
-        requirements: [] 
+        requirements: [
+            {
+                type: researchType.RESOURCE,
+                id: resourceIds.food1,
+                amount: 1
+            }
+        ] 
     },
-    production1: {
-        id: productionIds.production1,
+    [researchIds.research2]: {
+        id: researchIds.research2,
         order: 2,
-        type: researchType.PRODUCTION,
         status: researchStatus.AVAILABLE,
         costs: [
             {
@@ -37,7 +44,13 @@ var _research = {
                 amount: 25
             }
         ],
-        requirements: []
+        requirements: [
+            {
+                type: researchType.RESOURCE,
+                id: resourceIds.material1,
+                amount: 1
+            }
+        ]
     }
 };
 
@@ -84,28 +97,6 @@ var ResearchStore = assign({}, EventEmitter.prototype, {
     },
     removeResearchListener: function (callback) {
         this.removeListener(EVENT_RESEARCH, callback);
-    },
-    
-    //changes only for Resource Research
-    emitResearchResource:function () {
-        this.emit(EVENT_RESEARCH_RESOURCE)
-    },
-    addResearchResourceListener: function (callback) {
-        this.on(EVENT_RESEARCH_RESOURCE, callback);
-    },
-    removeResearchResourceListener: function (callback) {
-        this.removeListener(EVENT_RESEARCH_RESOURCE, callback);
-    },
-    
-    //changes only for Production Research
-    emitResearchProduction:function () {
-        this.emit(EVENT_RESEARCH_PRODUCTION)
-    },
-    addResearchProductionListener: function (callback) {
-        this.on(EVENT_RESEARCH_PRODUCTION, callback);
-    },
-    removeResearchProductionListener: function (callback) {
-        this.removeListener(EVENT_RESEARCH_PRODUCTION, callback);
     }
 });
 

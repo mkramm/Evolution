@@ -14,7 +14,6 @@ function getGameState() {
     };
 }
 
-
 var Game = React.createClass({
     getInitialState: function() {
         return getGameState();
@@ -39,7 +38,6 @@ var Game = React.createClass({
     },
 
     render: function () {
-        var brainButton = '';
         var ResourceAmountViews = [];
         var ResourceButtons = [];
 
@@ -56,7 +54,7 @@ var Game = React.createClass({
 
         return <div>
             <h1 className="text-center">Evolution - NextGen</h1>
-            <hr></hr>
+            <hr />
             <div className="row text-center">
                 <div className="col-sm-3">
                     <div id="amountContainer">
