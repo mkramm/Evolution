@@ -1,24 +1,25 @@
 import { connect } from 'react-redux'
-import { increase } from '../actions/index'
-import ResourceButtonList from '../components/Resource/ResourceButtonList'
+import { increase } from '../../actions/index'
+import ResourceButtonList from '../../components/Resource/ResourceButtonList'
 
 const mapStateToProps = (state) => {
   console.log('container', state)
   return {
-    resourceLength: state.resourceLength
+    resources: state.get('resources')
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onClick: (index) => {
-        dispatch(increase(index, 2))
+      dispatch(increase(index, 2))
     }
   }
 }
 
 const ResourcButtonListContainer = connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(ResourceButtonList)
 
 export default ResourcButtonListContainer

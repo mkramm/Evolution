@@ -1,5 +1,5 @@
 import React from 'react'
-import ResourcButtonListContainer from '../containers/ResourceButtonList'
+import ResourcButtonListContainer from '../containers/Resource/ResourceButtonList'
 
 const Game = () => (
   <div>

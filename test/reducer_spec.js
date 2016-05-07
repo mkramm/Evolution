@@ -1,60 +1,126 @@
-import {fromJS} from 'immutable';
-import {expect} from 'chai';
-import reducer from '../src/reducer';
-import {gameInitialState} from '../src/store';
+import { fromJS, List, Map } from 'immutable';
+import { expect } from 'chai';
+import {resourceReducer} from '../src/reducers/index';
+import { INCREASE } from '../src/actions/index'
+// overwirte console methods to avoid debug messages in our tests
+console.warn = function () { };
 
-function setup() {
-    var initialState = fromJS(gameInitialState);
+describe('resource reducer', () => {
+    it('Increase the amount from zero', () => {
+        let state = List([
+            Map({
+                name: 'resource1',
+                amount: 0
+            }),
+            Map({
+                name: 'resource2',
+                amount: 0
+            })
+        ]);
 
-    return {
-        initialState
-    }
-}
+        let action = {
+            type: INCREASE,
+            index: 0,
+            value: 2
+        };
+        let shouldState = resourceReducer(state, action);
 
-
-describe('reducer', () => {
-    it('TICK - increases the researched item value in the spaceShip', () => {
-        const {initialState} = setup();
-        const researchObj = initialState.get('researchList').get(0).set('level', 1);
-
-        const changedInitialState = initialState.update('researchList', researchList => researchList.set(0, researchObj));
-
-        const action = {
-            type: 'TICK'
-        }
-        const nextState = reducer(changedInitialState, action);
-
-        expect(nextState.get('spaceShip').get('iron')).to.equal(102.5);
-
+        expect(shouldState.get(0).get('name')).to.equal('resource1');
+        expect(shouldState.get(0).get('amount')).to.equal(2);
+        expect(shouldState.get(1).get('name')).to.equal('resource2');
+        expect(shouldState.get(1).get('amount')).to.equal(0);
     });
-    it('RESEARCH - research an item with enough iron', () => {
-        const {initialState} = setup();
-        const spaceShip = initialState.get('spaceShip').set('iron', 100);
-        const changedInitialState = initialState.set('spaceShip', spaceShip);
-        const action = {
-            type: 'RESEARCH',
-            researchId: 1
-        }
-        const nextState = reducer(changedInitialState, action);
+    it('Increase the amount from higher than zero', () => {
+        let state = List([
+            Map({
+                name: 'resource1',
+                amount: 0
+            }),
+            Map({
+                name: 'resource2',
+                amount: 2
+            })
+        ]);
 
-        expect(nextState.get('spaceShip').get('iron')).to.equal(0);
-        expect(nextState.get('researchList').get(0).get('level')).to.equal(1);
+        let action = {
+            type: INCREASE,
+            index: 1,
+            value: 2
+        };
+        let shouldState = resourceReducer(state, action);
 
+        expect(shouldState.get(0).get('name')).to.equal('resource1');
+        expect(shouldState.get(0).get('amount')).to.equal(0);
+        expect(shouldState.get(1).get('name')).to.equal('resource2');
+        expect(shouldState.get(1).get('amount')).to.equal(4);
     });
-    it('RESEARCH - research an item without enough iron', () => {
-        const {initialState} = setup();
-        const spaceShip = initialState.get('spaceShip').set('iron', 0);
-        const changedInitialState = initialState.set('spaceShip', spaceShip);
+    it('Increase the amount NOT, without value', () => {
+        let state = List([
+            Map({
+                name: 'resource1',
+                amount: 0
+            }),
+            Map({
+                name: 'resource2',
+                amount: 0
+            })
+        ]);
 
-        const action = {
-            type: 'RESEARCH',
-            researchId: 1
-        }
-        const nextState = reducer(changedInitialState, action);
+        let action = {
+            type: INCREASE,
+            index: 0
+        };
+        let shouldState = resourceReducer(state, action);
 
-        expect(nextState.get('errorMsg')).to.equal('Not enugh iron');
-        expect(nextState.get('spaceShip').get('iron')).to.equal(0);
-        expect(nextState.get('researchList').get(0).get('level')).to.equal(0);
+        expect(shouldState.get(0).get('name')).to.equal('resource1');
+        expect(shouldState.get(0).get('amount')).to.equal(0);
+        expect(shouldState.get(1).get('name')).to.equal('resource2');
+        expect(shouldState.get(1).get('amount')).to.equal(0);
+    });
+    it('Increase the amount NOT, without index', () => {
+        let state = List([
+            Map({
+                name: 'resource1',
+                amount: 0
+            }),
+            Map({
+                name: 'resource2',
+                amount: 0
+            })
+        ]);
 
+        let action = {
+            type: INCREASE,
+            value: 2
+        };
+        let shouldState = resourceReducer(state, action);
+
+        expect(shouldState.get(0).get('name')).to.equal('resource1');
+        expect(shouldState.get(0).get('amount')).to.equal(0);
+        expect(shouldState.get(1).get('name')).to.equal('resource2');
+        expect(shouldState.get(1).get('amount')).to.equal(0);
+    });
+    it('Increase the amount NOT, without type', () => {
+        let state = List([
+            Map({
+                name: 'resource1',
+                amount: 0
+            }),
+            Map({
+                name: 'resource2',
+                amount: 0
+            })
+        ]);
+
+        let action = {
+            index: 0,
+            value: 2
+        };
+        let shouldState = resourceReducer(state, action);
+
+        expect(shouldState.get(0).get('name')).to.equal('resource1');
+        expect(shouldState.get(0).get('amount')).to.equal(0);
+        expect(shouldState.get(1).get('name')).to.equal('resource2');
+        expect(shouldState.get(1).get('amount')).to.equal(0);
     });
 });

@@ -1,16 +1,20 @@
-import React, { PropTypes } from 'react'
-import { Map } from 'immutable'
+import React, { PropTypes } from 'react';
+import { Map } from 'immutable';
 
-const ResourceButton = ({onClick, index, resource, className}) => {
-    return <button onClick = {() => onClick(index)} className={className}>
-        {resource.get('name')} ({resource.get('amount')})
-    </button>;
+class ResourceButton extends React.Component {
+    shouldComponentUpdate(nextProps) {
+        return !this.props.resource.equals(nextProps.resource);
+    }
+    render () {
+        return <button onClick = {this.props.onClick} className={this.props.className}>
+            {this.props.resource.get('name')} ({this.props.resource.get('amount')})
+        </button>;
+    }
 }
 
 ResourceButton.propTypes = {
   onClick: PropTypes.func.isRequired,
   resource: PropTypes.instanceOf(Map),
-  index: PropTypes.number.isRequired,
   className: PropTypes.string
 }
 

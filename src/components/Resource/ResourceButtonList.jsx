@@ -1,24 +1,29 @@
 import React, { PropTypes } from 'react'
-import ResourceButton from '../../containers/ResourceButton'
+// import ResourceButton from '../../containers/ResourceButton'
+import ResourceButton from './ResourceButton'
 import { List } from 'immutable'
 
-const ResourceButtonList = ({resourceLength}) => {
-    let resourceButtons = [];
-    for (let i=0; i < resourceLength; i++){
-        resourceButtons.push(<ResourceButton
-                index = {i}
+class ResourceButtonList extends React.Component {
+    //  shouldComponentUpdate(nextProps, nextState) {
+    //     return !this.props.resources.equals(nextProps.resources);
+    // }
+    render() {
+        return <div>
+            {this.props.resources.map((resource, index) =>
+                <ResourceButton
                 className = 'btn btn-primary'
-                key={i}
-            />);
+                key={index}
+                resource={resource}
+                onClick={() => this.props.onClick(index)}
+                />
+            )}
+        </div>
     }
-    return <div>
-        <button>test</button>
-        {resourceButtons}
-    </div>
-};
+}
 
 ResourceButtonList.propTypes = {
-  resourceLength: PropTypes.number.isRequired
+    resources: PropTypes.instanceOf(List),
+    onClick: PropTypes.func.isRequired
 }
 
 
