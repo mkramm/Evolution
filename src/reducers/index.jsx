@@ -1,5 +1,5 @@
-import { combineReducers } from 'redux'
-import { fromJS, List, Map } from 'immutable'
+// import { combineReducers } from 'redux'
+import { List, Map } from 'immutable'
 import { INCREASE } from '../actions/index'
 
 let initialResources = List([
