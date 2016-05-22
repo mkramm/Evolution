@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import ResourceButtonList from '../../src/containers/Resource/ResourceButtonList';
+import ResearchButton from '../../src/containers/Research/Button';
 import Game from '../../src/components/Game'
 import TestUtils from 'react-addons-test-utils';
 import { Map, List } from 'immutable';
@@ -26,7 +27,8 @@ describe('Game Component', () => {
 
     expect(output.type).to.equal('div');
 
-    let resourceButtonList = output.props.children;
+    let [resourceButtonList, researchButton] = output.props.children;
     expect(resourceButtonList.type).to.equal(ResourceButtonList);
+    expect(researchButton.type).to.equal(ResearchButton);
   });
 });

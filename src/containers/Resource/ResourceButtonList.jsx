@@ -1,11 +1,10 @@
 import { connect } from 'react-redux'
-import { increase } from '../../actions/index'
+import { increase } from '../../actions/resource'
 import ResourceButtonList from '../../components/Resource/ResourceButtonList'
 
 const mapStateToProps = (state) => {
-  console.log('container', state)
   return {
-    resources: state.get('resources')
+    resources: state.get('resources').filter(resource => resource.get('active') !== false)
   }
 }
 
