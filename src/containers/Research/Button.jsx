@@ -2,9 +2,14 @@ import { connect } from 'react-redux'
 import { decrease, activate } from '../../actions/resource'
 import ResearchButton from '../../components/Research/Button'
 
+const getCostsForNextResearch = function (research) {
+    return research;
+}
 
-const checkResearchCosts = function (resources) {
-    return resources[0].amount >= 50;
+export const checkResearchCosts = function (store) {
+    let resources = store.resources;
+    let costs = getCostsForNextResearch(store.research);
+    return resources[costs.type] !== undefined && resources[costs.type].amount >= costs.amount;
 };
 
 export const tryToActivateNext = function (state, dispatch) {
@@ -20,9 +25,10 @@ export const tryToActivateNext = function (state, dispatch) {
     }
 };
 
-const research = function (state, dispatch) {
-    if (checkResearchCosts(state.resources)) {
-        dispatch(decrease(0, 50));
+export const research = function (state, dispatch) {
+    if (checkResearchCosts(state)) {
+        let costs = getCostsForNextResearch(state.research);
+        dispatch(decrease(costs.type, costs.amount));
         tryToActivateNext(state, dispatch);
     }
 };

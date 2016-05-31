@@ -15,6 +15,11 @@ let initialResources = List([
     })
 ]);
 
+let initialResearch = Map({
+    type: 0,
+    amount: 50
+});
+
 export const resourceReducer = function (state, action) {
     switch (action.type) {
         case INCREASE: {
@@ -53,16 +58,22 @@ export const resourceReducer = function (state, action) {
 //     resources
 // })
 
+const researchReducer = function (state, action) {
+    return initialResearch;
+};
+
 
 const game = (state, action) => {
     if (state === undefined) {
         state = Map({
-            resources: initialResources
+            resources: initialResources,
+            research: initialResearch
         })
     }
 
     return Map({
-        resources: resourceReducer(state.get('resources'), action)
+        resources: resourceReducer(state.get('resources'), action),
+        research: researchReducer(state.get('research'), action)
     });
 };
 
